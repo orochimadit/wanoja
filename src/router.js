@@ -21,6 +21,11 @@ const router = new Router({
       name: 'about',
       component: About
     },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: () => import( /* webpackChunkName: "categories" */ './views/Categories.vue')
+  },
     // jika routenya apapun selain definisi di atas maka component yang akan ditampilkan pada router-view 
     // adalah Home, route default untuk mencegah error
     { 
