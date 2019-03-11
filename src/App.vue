@@ -1,28 +1,37 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <!-- component header -->
+    <c-header />
+
+    <!-- component sidebar -->
+    <c-side-bar />
+
+    <!-- konten utama -->
+    <v-content>
+      <v-slide-y-transition mode="out-in">
+        <router-view></router-view>
+      </v-slide-y-transition>
+    </v-content>
+
+    <!-- component footer -->
+    <c-footer />
+
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+  import CHeader from '@/components/CHeader.vue'
+  import CFooter from '@/components/CFooter.vue'
+  import CSideBar from '@/components/CSideBar.vue'
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+  name: 'App',
+  components:{
+    CHeader,
+    CFooter,
+    CSideBar
+  },
+  mounted(){
+    console.log(process.env)
+}
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
