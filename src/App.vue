@@ -23,6 +23,7 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
   import CHeader from '@/components/CHeader.vue'
   import CFooter from '@/components/CFooter.vue'
   import CSideBar from '@/components/CSideBar.vue'
@@ -35,8 +36,26 @@ export default {
       CAlert: () => import(/* webpackChunkName: "c-alert" */ '@/components/CAlert.vue'),
          Search: () => import(/* webpackChunkName: "search" */ '@/views/Search.vue')
   },
+  methods: {
+    ...mapActions({
+      setStatusDialog   : 'dialog/setStatus',
+    }),
+  },
+   computed: {
+    ...mapGetters({
+      statusDialog  : 'dialog/status',
+    }),
+    dialog: {
+      get () {
+        return this.statusDialog
+      },
+      set (value) {
+        this.setStatusDialog(value)
+      }
+    },
+  },
   mounted(){
     console.log(process.env)
-}
+  }
 }
 </script>

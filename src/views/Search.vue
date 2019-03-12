@@ -50,6 +50,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import axios from 'axios'
+import { constants } from 'fs';
 export default {
   name: 'search',
   data () {
@@ -68,10 +70,12 @@ export default {
     doSearch(){
       let keyword = this.keyword
       if(keyword.length>0){
-        this.axios.get('/books/search/'+keyword)
+        let url = `${process.env.VUE_APP_BACKEND_URL}products/search/`+keyword
+        axios.get(url)
         .then((response) => {
-          let books = response.data.data
-          this.items = books
+          let products = response.data.data
+          this.items = products
+          console.log(response)
         })
         .catch((error) => {
           console.log(error)

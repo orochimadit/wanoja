@@ -16,13 +16,15 @@
     <!-- header bagian kanan -->
     <v-btn icon >
       <v-badge left overlap color="orange">
-           <span slot="badge" v-if="countCart>0"> {{ countCart }} </span>
+           <span slot="badge" v-if="countCart>0"> {{ countCart }} </span>s
         <v-icon>shopping_cart</v-icon>
       </v-badge>
     </v-btn>
 
     <!-- kolom pencarian di bawah header -->
-    <v-text-field
+       <v-text-field
+      v-if="isHome" 
+      @click="setStatusDialog(true)"
       slot="extension" 
       hide-details
       append-icon="mic"
@@ -31,7 +33,6 @@
       prepend-inner-icon="search"
       solo-inverted
     ></v-text-field>
-
   </v-toolbar>
 </template>
 <script>
@@ -41,7 +42,7 @@ export default {
   methods: {
     ...mapActions({
       setSideBar  : 'setSideBar',
-       setStatusDialog   : 'dialog/setStatus',
+       setStatusDialog   : 'dialog/setStatus', 
     }),
   },
   computed: {
