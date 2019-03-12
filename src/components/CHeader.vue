@@ -41,6 +41,7 @@ export default {
   methods: {
     ...mapActions({
       setSideBar  : 'setSideBar',
+       setStatusDialog   : 'dialog/setStatus',
     }),
   },
   computed: {

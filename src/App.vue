@@ -16,6 +16,9 @@
     <!-- component footer -->
     <c-footer />
  <c-alert />
+    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <search />
+    </v-dialog>
   </v-app>
 </template>
 
@@ -29,7 +32,8 @@ export default {
     CHeader,
     CFooter,
     CSideBar,
-      CAlert: () => import('@/components/CAlert.vue')
+      CAlert: () => import(/* webpackChunkName: "c-alert" */ '@/components/CAlert.vue'),
+         Search: () => import(/* webpackChunkName: "search" */ '@/views/Search.vue')
   },
   mounted(){
     console.log(process.env)
