@@ -16,7 +16,7 @@
     <!-- header bagian kanan -->
     <v-btn icon >
       <v-badge left overlap color="orange">
-        <span slot="badge">1</span>
+           <span slot="badge" v-if="countCart>0"> {{ countCart }} </span>
         <v-icon>shopping_cart</v-icon>
       </v-badge>
     </v-btn>
@@ -46,6 +46,7 @@ export default {
   computed: {
     ...mapGetters({
       sideBar : 'sideBar',
+      countCart : 'cart/count',
     }),
     isHome () {
         return (this.$route.path==='/')

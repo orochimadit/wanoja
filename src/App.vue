@@ -15,7 +15,7 @@
 
     <!-- component footer -->
     <c-footer />
-
+ <c-alert />
   </v-app>
 </template>
 
@@ -28,7 +28,8 @@ export default {
   components:{
     CHeader,
     CFooter,
-    CSideBar
+    CSideBar,
+      CAlert: () => import('@/components/CAlert.vue')
   },
   mounted(){
     console.log(process.env)
