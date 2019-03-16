@@ -116,7 +116,7 @@ export default {
   methods: {
     getImage (image){
         if(image!=null && image.length>0){
-            return "http://larashop-api.test/images"+ image
+            return "http://127.0.0.1:8000/api/v1"+ image
         }
         // default image jika tidak ditemukan, 
         // letakkan image ini pada folder /public/img di project Vue

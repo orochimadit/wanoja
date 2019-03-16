@@ -44,7 +44,7 @@
             white--text
             xs12
         >
-            &copy;2018 — Vueshop powered by <strong>Vuetify</strong>
+            &copy;2019 — Wanoja.id powered by <strong>Wanoja Developer</strong>
         </v-flex>
         </v-layout>
     </v-card>

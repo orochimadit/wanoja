@@ -16,9 +16,11 @@
     <!-- component footer -->
     <c-footer />
  <c-alert />
+    <keep-alive>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <search />
-    </v-dialog>
+    <component :is="currentComponent"></component>
+    </v-dialog>  
+    </keep-alive>
   </v-app>
 </template>
 
@@ -34,7 +36,9 @@ export default {
     CFooter,
     CSideBar,
       CAlert: () => import(/* webpackChunkName: "c-alert" */ '@/components/CAlert.vue'),
-         Search: () => import(/* webpackChunkName: "search" */ '@/views/Search.vue')
+         Search: () => import(/* webpackChunkName: "search" */ '@/views/Search.vue'),
+          Login: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+
   },
   methods: {
     ...mapActions({
@@ -44,6 +48,7 @@ export default {
    computed: {
     ...mapGetters({
       statusDialog  : 'dialog/status',
+       currentComponent: 'dialog/component'
     }),
     dialog: {
       get () {

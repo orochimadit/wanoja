@@ -5,7 +5,7 @@
         <v-btn icon dark @click="drawer=false">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title>Vueshop</v-toolbar-title>
+        <v-toolbar-title>Wanoja</v-toolbar-title>
       </v-toolbar>
 
       <v-list>
@@ -25,6 +25,7 @@
         <v-list-tile> 
         <!-- tombol login -->
           <v-btn
+          @click="login()"
             block
             round
             depressed
@@ -91,8 +92,14 @@ export default {
       // mapping action setSideBar pada store menggunakan map action
       ...mapActions({
         setSideBar  : 'setSideBar',
+          setStatusDialog   : 'dialog/setStatus',
+            setComponent   : 'dialog/setComponent',
       }),
-
+      login(){
+    this.setStatusDialog(true)
+    this.setComponent('login')
+    this.setSideBar(false)
+      },
     },
 }
 </script>

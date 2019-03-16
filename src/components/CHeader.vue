@@ -43,7 +43,13 @@ export default {
     ...mapActions({
       setSideBar  : 'setSideBar',
        setStatusDialog   : 'dialog/setStatus', 
+        setComponent   : 'dialog/setComponent',
     }),
+       search(){
+        this.setStatusDialog(true) 
+        this.setComponent('search') // <= ini
+        this.setSideBar(false)
+    }
   },
   computed: {
     ...mapGetters({
