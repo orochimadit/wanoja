@@ -78,15 +78,15 @@
           this.setStatusDialog(false)
       },
       submit () {
-          let url = `${process.env.VUE_APP_BACKEND_URL}login` 
+          let urlLogin = `${process.env.VUE_APP_BACKEND_URL}login` 
         //   $url = 'http://127.0.0.1:8000/api/v1/login'
-        console.log(url)
+        console.log(urlLogin)
           if (this.$refs.form.validate()) {
             let formData = {
               'email' : this.email,
               'password' : this.password
             }
-            axios.post(url, formData)
+            axios.post(urlLogin, formData)
               .then((response) => {
                 let data_user = response.data.data
                 this.setAuth(data_user)
