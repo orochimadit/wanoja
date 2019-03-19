@@ -4,26 +4,44 @@
       <v-subheader>
         All Category 
       </v-subheader>
-      <v-layout row wrap>
+      <v-layout
+        row
+        wrap
+      >
         <!-- lakukan perulangan pada properti categories -->
-        <v-flex v-for="category in categories" xs6 :key="category.id">
+        <v-flex
+          v-for="category in categories"
+          :key="category.id"
+          xs6
+        >
           <v-card :to="'/category/'+ category.slug">
             <v-img
               v-if="category.image"
               :src="getImage('/categories/'+category.image)"
               height="150px"
             >
-              <v-container fill-height fluid pa-2>
+              <v-container
+                fill-height
+                fluid
+                pa-2
+              >
                 <v-layout fill-height>
-                  <v-flex xs12 align-end flexbox>
-                    <span class="title white--text text-block" v-text="category.name"></span>
+                  <v-flex
+                    xs12
+                    align-end
+                    flexbox
+                  >
+                    <span
+                      class="title white--text text-block"
+                      v-text="category.name"
+                    />
                   </v-flex>
                 </v-layout>
               </v-container>
             </v-img>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
               <v-btn icon>
                 <v-icon>favorite</v-icon>
               </v-btn>
@@ -44,13 +62,12 @@
         <!-- kode untuk link paging halaman -->
         <v-pagination
           v-model="page"
-          @input="go"
           :length="lengthPage"
           :total-visible="5"
-        ></v-pagination>
+          @input="go"
+        />
       </div>
     </template>
-
   </div>
 </template>
 <style scoped>
@@ -77,6 +94,9 @@ import { constants } from 'fs';
         lengthPage: 0
       }
     },
+    created(){
+      this.go()
+    },
     methods: {
       go(){
         // let url = '/categories'
@@ -93,9 +113,6 @@ import { constants } from 'fs';
             console.log(error.response)
           })
       },
-    },
-    created(){
-      this.go()
     }
   }
 </script>

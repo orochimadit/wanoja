@@ -4,24 +4,42 @@
       <v-subheader>
         Products
       </v-subheader>
-      <v-layout row wrap>
-        <v-flex v-for="(book, index) in products" xs6 :key="index">
+      <v-layout
+        row
+        wrap
+      >
+        <v-flex
+          v-for="(book, index) in products"
+          :key="index"
+          xs6
+        >
           <v-card :to="'/product/'+ book.slug">
             <v-card-media
               :src="getImage('/books/'+book.cover)"
               height="150px"
             >
-              <v-container fill-height fluid pa-2>
+              <v-container
+                fill-height
+                fluid
+                pa-2
+              >
                 <v-layout fill-height>
-                  <v-flex xs12 align-end flexbox>
-                    <span class="title white--text text-block" v-text="book.title"></span>
+                  <v-flex
+                    xs12
+                    align-end
+                    flexbox
+                  >
+                    <span
+                      class="title white--text text-block"
+                      v-text="book.title"
+                    />
                   </v-flex>
                 </v-layout>
               </v-container>
             </v-card-media>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
               <v-btn icon>
                 <v-icon>favorite</v-icon>
               </v-btn>
@@ -41,10 +59,10 @@
       <div class="text-xs-center">
         <v-pagination
           v-model="page"
-          @input="go"
           :length="lengthPage"
           :total-visible="5"
-        ></v-pagination>
+          @input="go"
+        />
       </div>
     </template>
   </div>
@@ -72,6 +90,9 @@ export default {
         lengthPage: 0
       }
     },
+    created(){
+      this.go()
+    },
     methods: {
       go(){
         // let url = '/books'
@@ -91,9 +112,6 @@ export default {
             console.log(error.response)
           })
       },
-    },
-    created(){
-      this.go()
     }
   }
 

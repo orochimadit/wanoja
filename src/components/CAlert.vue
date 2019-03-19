@@ -1,15 +1,23 @@
 <template>
-  <v-snackbar v-model="alert" :color="type" top>
-      {{ text }}
-      <v-btn dark flat @click="close">
-        Close
-      </v-btn>
+  <v-snackbar
+    v-model="alert"
+    :color="type"
+    top
+  >
+    {{ text }}
+    <v-btn
+      dark
+      flat
+      @click="close"
+    >
+      Close
+    </v-btn>
   </v-snackbar>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
-    name: 'c-alert',
+    name: 'CAlert',
     computed: {
       ...mapGetters({
         status : 'alert/status',

@@ -1,97 +1,128 @@
 <template>
-  <v-navigation-drawer v-model="drawer" absolute fixed clipped>
+  <v-navigation-drawer
+    v-model="drawer"
+    absolute
+    fixed
+    clipped
+  >
     <!-- header toolbar pada sidebar supaya lebih cantik -->
-      <v-toolbar dark color="primary">
-        <v-btn icon dark @click="drawer=false">
-          <v-icon>close</v-icon>
-        </v-btn>
-        <v-toolbar-title>Wanoja</v-toolbar-title>
-      </v-toolbar>
+    <v-toolbar
+      dark
+      color="primary"
+    >
+      <v-btn
+        icon
+        dark
+        @click="drawer=false"
+      >
+        <v-icon>close</v-icon>
+      </v-btn>
+      <v-toolbar-title>Wanoja</v-toolbar-title>
+    </v-toolbar>
 
-      <v-list v-if="guest">
-        <v-list-tile>  
+    <v-list v-if="guest">
+      <v-list-tile>  
         <!-- tombol register -->
-          <v-btn
+        <v-btn
+          depressed
+          block
+          round
+          color="secondary"
+          class="white--text"
           @click="register()"
-            depressed
-            block
-            round
-            color="secondary"
-            class="white--text"
+        >
+          Register
+          <v-icon
+            right
+            dark
           >
-            Register
-            <v-icon right dark>person_add</v-icon>
-          </v-btn>
-        </v-list-tile>
-        <v-list-tile> 
+            person_add
+          </v-icon>
+        </v-btn>
+      </v-list-tile>
+      <v-list-tile> 
         <!-- tombol login -->
-          <v-btn
+        <v-btn
+          block
+          round
+          depressed
+          color="accent lighten-1"
+          class="white--text"
           @click="login()"
-            block
-            round
-            depressed
-            color="accent lighten-1"
-            class="white--text"
+        >
+          Login
+          <v-icon
+            right
+            dark
           >
-            Login
-            <v-icon right dark>lock_open</v-icon>
-          </v-btn>
-        </v-list-tile>
-      </v-list>
-      <v-list v-if="!guest">
-    <v-list-tile>
+            lock_open
+          </v-icon>
+        </v-btn>
+      </v-list-tile>
+    </v-list>
+    <v-list v-if="!guest">
+      <v-list-tile>
         <v-list-tile-avatar>
-        <img :src="getImage('/users/'+user.avatar)">
+          <img :src="getImage('/users/'+user.avatar)">
         </v-list-tile-avatar>
 
         <v-list-tile-content>
-        <v-list-tile-title>
+          <v-list-tile-title>
             {{ user.name }}
-        </v-list-tile-title>
+          </v-list-tile-title>
         </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>    
+      </v-list-tile>
+      <v-list-tile>    
         <v-btn
-        block
-        small
-        round
-        depressed
-        color="error lighten-1"
-        class="white--text"
-        @click.stop="logout();"
+          block
+          small
+          round
+          depressed
+          color="error lighten-1"
+          class="white--text"
+          @click.stop="logout();"
         >
-        Logout
-        <v-icon small right dark>settings_power</v-icon>
+          Logout
+          <v-icon
+            small
+            right
+            dark
+          >
+            settings_power
+          </v-icon>
         </v-btn>
-    </v-list-tile>
-</v-list>
-      <v-list class="pt-0" dense>
-        <v-divider></v-divider>
-        <!-- menu navigasi pada properti data items -->
-        <v-list-tile
-          v-for="(item,index) in items"
-          :key="index"
-          :href="item.route" 
-          :to="{name: item.route}"
-        >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
+      </v-list-tile>
+    </v-list>
+    <v-list
+      class="pt-0"
+      dense
+    >
+      <v-divider />
+      <!-- menu navigasi pada properti data items -->
+      <v-list-tile
+        v-for="(item,index) in items"
+        v-if="!item.auth || (item.auth && !guest)"
+        :key="index" 
+        :href="item.route"
+        :to="{name: item.route}"
+      >
+        <v-list-tile-action>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-tile-action>
 
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-
-    </v-navigation-drawer>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import axios from 'axios'
 
 export default {
-    name: 'c-side-bar',
+    name: 'CSideBar',
     data: () => ({
       // variabel untuk mengontrol visibilitas dari sidebar
       
@@ -99,6 +130,7 @@ export default {
       items: [
           { title: 'Home', icon: 'dashboard', route: 'home' },
           { title: 'About', icon: 'question_answer', route: 'about' },
+          { title: 'Profile', icon: 'person', route: 'profile', auth: true },
       ]
     }),
     computed: {

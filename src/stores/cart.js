@@ -10,6 +10,7 @@ export default {
                 title: payload.title,
                 cover: payload.cover,
                 price: payload.price,
+                weight: payload.weight,
                 quantity: 1
             })
         },
@@ -20,15 +21,16 @@ export default {
                 title: payload.title,
                 cover: payload.cover,
                 price: payload.price,
-                quantity: ++payload.quantity
+                weight: payload.weight,
+                quantity: payload.quantity
             });
             if(payload.quantity<=0){
                 state.carts.splice(idx,1) 
             }
         },
-        set:(state,payload)=>{
-            state.carts.splice(idx,1)
-        }
+        set: (state, payload) => {
+            state.carts = payload
+        },
     },
     actions: {
         add: ({state, commit}, payload) => {

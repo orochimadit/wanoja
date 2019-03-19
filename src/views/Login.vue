@@ -1,22 +1,33 @@
 <template>
   <v-card>
-    <v-toolbar dark color="primary">
-      <v-btn icon dark @click="close">
+    <v-toolbar
+      dark
+      color="primary"
+    >
+      <v-btn
+        icon
+        dark
+        @click="close"
+      >
         <v-icon>close</v-icon>
       </v-btn>
       <v-toolbar-title>Login and Start Shopping!</v-toolbar-title>
     </v-toolbar>
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-container fluid>
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation
+      >
         <v-text-field
           v-model="email"
           :rules="emailRules"
           label="E-mail"
           required
           append-icon="email"
-        ></v-text-field>
+        />
         <v-text-field
           v-model="password"
           :append-icon="showPassword ? 'visibility' : 'visibility_off'"
@@ -26,17 +37,22 @@
           hint="At least 6 characters"
           counter
           @click:append="showPassword = !showPassword"
-        ></v-text-field>
+        />
 
         <div class="text-xs-center">
-        <v-btn
-          color="accent lighten-1"
-          :disabled="!valid"
-          @click="submit"
-        >
-          Login
-          <v-icon right dark>lock_open</v-icon>
-        </v-btn>
+          <v-btn
+            color="accent lighten-1"
+            :disabled="!valid"
+            @click="submit"
+          >
+            Login
+            <v-icon
+              right
+              dark
+            >
+              lock_open
+            </v-icon>
+          </v-btn>
         </div>
       </v-form>
     </v-container>
@@ -46,7 +62,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import axios from 'axios'
   export default {
-    name: 'login',
+    name: 'Login',
     data () {
       return {
         valid: true,
@@ -66,6 +82,7 @@
     computed: {
       ...mapGetters({
         user  : 'auth/user',
+         prevUrl : 'prevUrl',
       }),
     },
     methods: {
@@ -114,6 +131,9 @@
                     type  : 'error',
                 })
               })
+              
+            if(this.prevUrl.length>0) this.$router.push(this.prevUrl) // ini previous url
+            this.close()
           }
       },
     },
