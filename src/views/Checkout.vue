@@ -50,6 +50,11 @@
               persistent-hint
               single-line
             />
+            <v-text-field
+              label="Type"
+              v-model="destinationType"
+              required
+            ></v-text-field>
           </v-form>
           <v-card-actions>
             <v-btn
@@ -101,26 +106,88 @@
         </v-container>
       </v-card>
     </div>
+    <v-subheader>Courier</v-subheader>
+<div>
+    <v-card flat>
+    <v-container>
+    <v-select
+        v-model="courier"
+        :items="couriers"
+        @change="getServices"
+        item-text="text"
+        item-value="id"
+        label="Courier"
+        persistent-hint
+        single-line
+    ></v-select>
+
+    <v-select
+        v-model="service"
+        v-if="courier"
+        :items="services"
+        @change="calculateBill"
+        item-text="resume"
+        item-value="service"
+        label="Courier Service"
+        persistent-hint
+        single-line
+    ></v-select>
+    
+    <v-card-actions>
+        Subtotal
+        <v-spacer />
+        Rp. {{ shippingCost.toLocaleString('id-ID') }}
+    </v-card-actions>
+    </v-container>
+    </v-card>
+</div>
+
+<v-subheader>Total</v-subheader>
+<v-card>
+<v-container>
+<v-layout row wrap>
+    <v-flex xs6 text-xs-center>
+    Total Bill ({{ totalQuantity }} items)
+    <div class="title">{{ totalBill.toLocaleString('id-ID') }}</div>
+    </v-flex>
+    <v-flex xs6 text-xs-center>
+    <v-btn color="orange">
+        <v-icon light>attach_money</v-icon> &nbsp;
+        Pay
+    </v-btn>
+    </v-flex>
+</v-layout>
+</v-container>
+</v-card>
   </div>
 </template>
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import axios from 'axios'
   export default {
     data () {
       return {
-        name: '',
+         name: '',
         address: '',
         phone: '',
         province_id: 0,
         city_id: 0,
+        destinationType:'',
+        courier: '',
+        couriers: [],
+        service: '',
+        services: [],
+        shippingCost: 0,
+        totalBill: 0,
+        dialogConfirm: false,
       }
     },
     computed: {
       ...mapGetters({
-        user        : 'auth/user',
-        provinces   : 'region/provinces',
-        cities      : 'region/cities',
-        carts       : 'cart/carts',
+        user          : 'auth/user',
+        provinces     : 'region/provinces',
+        cities        : 'region/cities',
+        carts         : 'cart/carts',
         countCart     : 'cart/count',
         totalPrice    : 'cart/totalPrice',
         totalQuantity : 'cart/totalQuantity',
@@ -139,6 +206,7 @@
           setAuth      : 'auth/set',
           setProvinces  : 'region/setProvinces',
           setCities     : 'region/setCities',
+          setCart     : 'cart/set'
       }),
       saveShipping(){
         let formData = new FormData()
@@ -147,14 +215,14 @@
         formData.set('phone', this.phone)
         formData.set('province_id', this.province_id)
         formData.set('city_id', this.city_id)
-
+        //  formData.set('destinatonType',this.destinationType)
         let config = {
           headers: {
             'Authorization': 'Bearer ' + this.user.api_token,
           },
         }
-
-        this.axios.post('/shipping', formData, config)
+        let urlShipping = `${process.env.VUE_APP_BACKEND_URL}shipping/`
+        axios.post(urlShipping, formData, config)
           .then((response) => {
               this.setAuth(response.data.data) 
               this.setAlert({
@@ -172,23 +240,120 @@
               })
           })
       },
-    },
+       getServices(){
+        let encodedCart = JSON.stringify(this.carts)
+        let formData = new FormData()
+        formData.set('courier', this.courier)
+        formData.set('carts', encodedCart);
+        
+        let config = {
+            headers: {
+                'Authorization': 'Bearer ' + this.user.api_token,
+            },
+        }
+        let urlServices = `${process.env.VUE_APP_BACKEND_URL}services/`
+        axios.post(urlServices, formData, config)
+            .then((response) => {
+                let response_data = response.data
+                
+                if(response_data.status!='error'){
+                    this.services = response_data.data.services
+                    this.setCart(response_data.data.safe_carts)
+                }
+
+                this.setAlert({
+                    status : true,
+                    text  : response_data.message,
+                    type  : response_data.status,
+                })
+            })
+            .catch((error) => {
+                //console.log(error)
+                let responses = error.response
+                this.setAlert({
+                    status : true,
+                    text  : responses.data.message,
+                    type  : 'error',
+                })
+            })
+      },
+      calculateBill(){
+        let selectedService = this.services.find((service) => {
+            return (service.service==this.service)
+        })
+        this.shippingCost = selectedService.cost
+        this.totalBill = parseInt(this.totalPrice) + parseInt(this.shippingCost)
+      },
+      pay(){
+        this.dialogConfirm = false
+        let safeCart = JSON.stringify(this.carts)
+        let formData = new FormData()
+        formData.set('courier', this.courier)
+        formData.set('service', this.service)
+        formData.set('carts', safeCart);
+        let config = {
+            headers: {
+                'Authorization': 'Bearer' + this.user.api_token,
+            },
+        }
+       axios.post('/payment', formData, config)
+            .then((response) => {
+                let response_data = response.data
+                if(response_data && response_data.status=='success'){
+                    this.setPayment(response_data.data)
+                    this.$router.push({path: "/payment"})
+                    this.setCart([])
+                }
+
+                this.setAlert({
+                    status : true,
+                    text  : response_data.message,
+                    type  : response_data.status,
+                })
+            })
+            .catch((error) => {
+                let responses = error.response
+                this.setAlert({
+                    status : true,
+                    text  : responses.data.message,
+                    type  : 'error',
+                })
+            })
+      },
+      cancel(){
+        this.dialogConfirm = false
+      }
+    },                                                                                                                                         
     created(){
       this.name = this.user.name
       this.address = this.user.address
       this.phone = this.user.phone
       this.city_id = this.user.city_id
       this.province_id = this.user.province_id
-
+      // this.destinationType = 
+      // this.destinationType = this.destinationType
       if(this.provinces && this.provinces.length==0){
-        this.axios.get('/provinces')
+        // let urlProvinces = `${process.env.VUE_APP_BACKEND_URL}categories/slug/`+slug
+        let urlProvinces = `${process.env.VUE_APP_BACKEND_URL}provinces/`
+        let urlCities = `${process.env.VUE_APP_BACKEND_URL}cities/`
+        axios.get(urlProvinces)
         .then((response) => {
             this.setProvinces(response.data.data)
         })
 
-        this.axios.get('/cities')
+        axios.get(urlCities)
         .then((response) => {
             this.setCities(response.data.data)
+             this.setDestinationType(response.data.data)
+            cconsole.log('cities',response.data.data)
+            // console.log(cities)
+        })
+      }
+       let urlCouriers = `${process.env.VUE_APP_BACKEND_URL}couriers/`
+       if(this.couriers.length==0){
+        axios.get(urlCouriers)
+        .then((response) => {
+            this.couriers = response.data.data
         })
       }
     }
