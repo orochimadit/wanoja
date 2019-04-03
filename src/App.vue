@@ -39,6 +39,7 @@ export default {
       Search: () => import(/* webpackChunkName: "search" */ '@/views/Search.vue'),
       Login: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
       Cart: () => import(/* webpackChunkName: "cart" */ '@/views/Cart.vue'),
+      
   },
   methods: {
     ...mapActions({

@@ -151,7 +151,7 @@
     <div class="title">{{ totalBill.toLocaleString('id-ID') }}</div>
     </v-flex>
     <v-flex xs6 text-xs-center>
-    <v-btn color="orange">
+    <v-btn color="orange" @click="dialogConfirm=true" :disabled="totalBill==0">
         <v-icon light>attach_money</v-icon> &nbsp;
         Pay
     </v-btn>
@@ -159,6 +159,21 @@
 </v-layout>
 </v-container>
 </v-card>
+<template>
+    <v-layout row justify-center>
+        <v-dialog v-model="dialogConfirm" persistent max-width="290">
+        <v-card>
+            <v-card-title class="headline">Confirmation!</v-card-title>
+            <v-card-text>If You continue, transaction will be processed</v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" flat @click="cancel">Cancel</v-btn>
+            <v-btn color="green darken-1" flat @click="pay">Continue</v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+    </v-layout>
+    </template>
   </div>
 </template>
 <script>
@@ -206,7 +221,8 @@
           setAuth      : 'auth/set',
           setProvinces  : 'region/setProvinces',
           setCities     : 'region/setCities',
-          setCart     : 'cart/set'
+          setCart     : 'cart/set',
+           setPayment    : 'setPayment'
       }),
       saveShipping(){
         let formData = new FormData()
@@ -290,13 +306,14 @@
         let formData = new FormData()
         formData.set('courier', this.courier)
         formData.set('service', this.service)
-        formData.set('carts', safeCart);
+        formData.set('carts', safeCart)
         let config = {
             headers: {
-                'Authorization': 'Bearer' + this.user.api_token,
+                'Authorization': 'Bearer ' + this.user.api_token,
             },
         }
-       axios.post('/payment', formData, config)
+        let urlPayment = `${process.env.VUE_APP_BACKEND_URL}payment/`
+       axios.post(urlPayment, formData, config)
             .then((response) => {
                 let response_data = response.data
                 if(response_data && response_data.status=='success'){
@@ -304,21 +321,23 @@
                     this.$router.push({path: "/payment"})
                     this.setCart([])
                 }
-
+              
                 this.setAlert({
                     status : true,
                     text  : response_data.message,
                     type  : response_data.status,
                 })
             })
-            .catch((error) => {
-                let responses = error.response
-                this.setAlert({
-                    status : true,
-                    text  : responses.data.message,
-                    type  : 'error',
-                })
-            })
+            // .catch((error) => {
+            //     let responses = error.response
+            //     this.setAlert({
+            //         status : true,
+            //         text  : responses.data.message,
+            //         type  : 'error',
+            //     })
+            //     console.log(responses)
+            // })
+            .catch(error => console.log(error, 'error'))
       },
       cancel(){
         this.dialogConfirm = false
@@ -330,8 +349,9 @@
       this.phone = this.user.phone
       this.city_id = this.user.city_id
       this.province_id = this.user.province_id
+      
       // this.destinationType = 
-      // this.destinationType = this.destinationType
+      // this.destinationType = this.user.destinationType
       if(this.provinces && this.provinces.length==0){
         // let urlProvinces = `${process.env.VUE_APP_BACKEND_URL}categories/slug/`+slug
         let urlProvinces = `${process.env.VUE_APP_BACKEND_URL}provinces/`
@@ -344,7 +364,7 @@
         axios.get(urlCities)
         .then((response) => {
             this.setCities(response.data.data)
-             this.setDestinationType(response.data.data)
+            //  this.setDestinationType(response.data.data)
             cconsole.log('cities',response.data.data)
             // console.log(cities)
         })

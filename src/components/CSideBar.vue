@@ -131,6 +131,7 @@ export default {
           { title: 'Home', icon: 'dashboard', route: 'home' },
           { title: 'About', icon: 'question_answer', route: 'about' },
           { title: 'Profile', icon: 'person', route: 'profile', auth: true },
+          { title: 'My Order', icon: 'shop_two', route: 'my-order', auth: true },
       ]
     }),
     computed: {
