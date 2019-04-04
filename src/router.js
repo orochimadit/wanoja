@@ -59,6 +59,12 @@ const router = new Router({
   component: () => import( /* webpackChunkName: "profile" */ './views/Profile.vue'),
   meta: { auth: true }
 },
+{
+  path: '/my-order',
+  name: 'my-order',
+  component: () => import( /* webpackChunkName: "my-order" */ './views/MyOrder.vue'),
+  meta: { auth: true }
+},
     // jika routensya apapun selain definisi di atas maka component yang akan ditampilkan pada router-view 
     // adalah Home, route default untuk mencegah error
     { 
