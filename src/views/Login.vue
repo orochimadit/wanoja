@@ -95,7 +95,7 @@
           this.setStatusDialog(false)
       },
       submit () {
-          let urlLogin = `${process.env.VUE_APP_BACKEND_URL}login` 
+          let urlLogin = `${process.env.VUE_APP_API_URL}login` 
         //   $url = 'http://127.0.0.1:8000/api/v1/login'
         console.log(urlLogin)
           if (this.$refs.form.validate()) {

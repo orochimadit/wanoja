@@ -24,7 +24,7 @@
           <v-card :to="'/category/'+ category.slug">
             <!-- untuk load image supaya lebih rapi akan kita buatkan method getImage -->
             <v-img
-              :src="getImage('/categories/'+category.image)"
+              :src="getImage(category.image)"
               height="150px"
             >
               <v-container
@@ -33,7 +33,7 @@
                 pa-2
               >
                 <v-layout fill-height>
-                  <v-flex
+                  <v-flex   
                     xs12
                     align-end
                     flexbox
@@ -69,7 +69,7 @@
     <!-- Bagian kedua yaitu Book -->
     <v-container grid-list-md>
       <v-subheader>
-        Top Books 
+        Top Products 
         <v-spacer />
         <!-- link ke route books yang nantinya akan kita definisikan routing dan componentnya -->
         <router-link to="/products">
@@ -88,7 +88,7 @@
         >
           <v-card :to="'/products/'+ product.slug">
             <v-img
-              :src="getImage('/products/'+product.cover)"
+              :src="getImage(product.cover)"
               height="150px"
             >
               <v-container
@@ -154,12 +154,12 @@ export default {
 
     let count = 4
     // request ke endpoint category random dengan parameter count = 4
-    let url = `${process.env.VUE_APP_BACKEND_URL}categories/random/${count}`
+    let url = `${process.env.VUE_APP_API_URL}categories/random/${count}`
     //    let url = 'https://jsonplaceholder.typicode.com/todos';
-    console.log("ENV", process.env.VUE_APP_BACKEND_URL, url)
+    console.log("ENV", process.env.VUE_APP_API_URL, url)
     axios(
       { method: 'GET',
-       url,}
+       url}
     )
         .then((response) => {
             console.log(response)
@@ -174,28 +174,38 @@ export default {
         })
 
     let countP = 8
-    let urlProduct = `${process.env.VUE_APP_BACKEND_URL}products/top/${countP}` 
+    let urlProduct = `${process.env.VUE_APP_API_URL}products/top/${countP}` 
     // request ke endpoint top Product dengan parameter count = 8
     console.log(urlProduct)
-    axios(
-      {
-        method: 'GET',
-        urlProduct
-       })
-        .then((response) => {
-          console.log(response)
+      axios.get(urlProduct)
+          .then((response) => {
+            console.log(response)
             let products = response.data.data
             this.products = products
-        })
-        .catch((error) => {
-            let responses = error.response
-            console.log(responses)
-        })
+            console.log(response)
+          })
+          .catch((error) => {
+            console.log(error.response)
+          })
+    // axios(
+    //   {
+    //     method: 'GET',
+    //     urlProduct
+    //    })
+    //     .then((response) => {
+    //       console.log(response)
+    //         let products = response.data.data
+    //         this.products = products
+    //     })
+    //     .catch((error) => {
+    //         let responses = error.response
+    //         console.log(error)
+    //     })
   },
   methods: {
     getImage (image){
         if(image!=null && image.length>0){
-            return "http://127.0.0.1:8000/api/v1"+ image
+            return "http://127.0.0.1:8000"+ image
         }
         // default image jika tidak ditemukan, 
         // letakkan image ini pada folder /public/img di project Vue

@@ -15,7 +15,7 @@
         >
           <v-card :to="'/product/'+ book.slug">
             <v-card-media
-              :src="getImage('/books/'+book.cover)"
+              :src="getImage(book.cover)"
               height="150px"
             >
               <v-container
@@ -96,7 +96,7 @@ export default {
     methods: {
       go(){
         // let url = '/books'
-        let url = `${process.env.VUE_APP_BACKEND_URL}products/`
+        let url = `${process.env.VUE_APP_API_URL}products/`
         if(this.page>0) url = '/products?page='+this.page
         axios({
             Method:'GET',

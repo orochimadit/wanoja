@@ -8,9 +8,15 @@
             ref="form"
             lazy-validation
           >
+          <v-text-field
+              
+              label="Nama Pengirim"
+              required
+              append-icon="person"
+            />
             <v-text-field
               v-model="name"
-              label="Name"
+              label="Name Penerima"
               required
               append-icon="person"
             />
@@ -79,7 +85,7 @@
               avatar
             >
               <v-list-tile-avatar>
-                <img :src="getImage('/books/'+item.cover)">
+                <img :src="getImage(item.cover)">
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title v-html="item.title" />
@@ -237,7 +243,7 @@
             'Authorization': 'Bearer ' + this.user.api_token,
           },
         }
-        let urlShipping = `${process.env.VUE_APP_BACKEND_URL}shipping/`
+        let urlShipping = `${process.env.VUE_APP_API_URL}shipping/`
         axios.post(urlShipping, formData, config)
           .then((response) => {
               this.setAuth(response.data.data) 
@@ -267,7 +273,7 @@
                 'Authorization': 'Bearer ' + this.user.api_token,
             },
         }
-        let urlServices = `${process.env.VUE_APP_BACKEND_URL}services/`
+        let urlServices = `${process.env.VUE_APP_API_URL}services/`
         axios.post(urlServices, formData, config)
             .then((response) => {
                 let response_data = response.data
@@ -312,7 +318,7 @@
                 'Authorization': 'Bearer ' + this.user.api_token,
             },
         }
-        let urlPayment = `${process.env.VUE_APP_BACKEND_URL}payment/`
+        let urlPayment = `${process.env.VUE_APP_API_URL}payment/`
        axios.post(urlPayment, formData, config)
             .then((response) => {
                 let response_data = response.data
@@ -354,8 +360,8 @@
       // this.destinationType = this.user.destinationType
       if(this.provinces && this.provinces.length==0){
         // let urlProvinces = `${process.env.VUE_APP_BACKEND_URL}categories/slug/`+slug
-        let urlProvinces = `${process.env.VUE_APP_BACKEND_URL}provinces/`
-        let urlCities = `${process.env.VUE_APP_BACKEND_URL}cities/`
+        let urlProvinces = `${process.env.VUE_APP_API_URL}provinces/`
+        let urlCities = `${process.env.VUE_APP_API_URL}cities/`
         axios.get(urlProvinces)
         .then((response) => {
             this.setProvinces(response.data.data)
@@ -365,11 +371,11 @@
         .then((response) => {
             this.setCities(response.data.data)
             //  this.setDestinationType(response.data.data)
-            cconsole.log('cities',response.data.data)
+            console.log('cities',response.data.data)
             // console.log(cities)
         })
       }
-       let urlCouriers = `${process.env.VUE_APP_BACKEND_URL}couriers/`
+       let urlCouriers = `${process.env.VUE_APP_API_URL}couriers/`
        if(this.couriers.length==0){
         axios.get(urlCouriers)
         .then((response) => {

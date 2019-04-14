@@ -4,9 +4,9 @@
       <v-subheader class="title">
         {{ product.title }}
       </v-subheader>
-      <v-card-media
+      <v-img
         v-if="product.cover"
-        :src="getImage('/products/'+product.cover)"
+        :src="getImage(product.cover)"
         height="200px"
       />
 
@@ -101,7 +101,7 @@ export default {
     },
     created(){
         let slug = this.$route.params.slug
-        let url = `${process.env.VUE_APP_BACKEND_URL}products/slug/`+slug
+        let url = `${process.env.VUE_APP_API_URL}products/slug/`+slug
         console.log(url)
         axios({
             Method:'GET',

@@ -4,7 +4,7 @@
       <v-subheader> {{ category.name }} </v-subheader>
       <v-card-media
         v-if="category.image"
-        :src="getImage('/categories/' + category.image)"
+        :src="getImage(category.image)"
         height="150px"
       />
       <v-subheader> Products by "{{ category.name }}" category" </v-subheader>
@@ -21,7 +21,7 @@
           <v-card :to="'/product/'+ book.slug">
             <v-card-media
               v-if="book.cover" 
-              :src="getImage('/books/'+book.cover)"
+              :src="getImage(book.cover)"
               height="150px"
             >
               <v-container
@@ -104,7 +104,7 @@ export default {
       go(){
         let slug = this.$route.params.slug
         // let url = '/categories/slug/'+slug
-        let url = `${process.env.VUE_APP_BACKEND_URL}categories/slug/`+slug
+        let url = `${process.env.VUE_APP_API_URL}categories/slug/`+slug
         if(this.page>0) url = url + '?page='+this.page
         url = encodeURI(url)
         axios.get(url)
@@ -114,6 +114,7 @@ export default {
             this.category = category
             this.products = category.products.data
             this.lengthPage = category.products.last_page
+            console.log(response)
           })
           .catch((error) => {
             console.log(error.response)

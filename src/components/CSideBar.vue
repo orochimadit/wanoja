@@ -132,6 +132,7 @@ export default {
           { title: 'About', icon: 'question_answer', route: 'about' },
           { title: 'Profile', icon: 'person', route: 'profile', auth: true },
           { title: 'My Order', icon: 'shop_two', route: 'my-order', auth: true },
+             { title: 'confirmations', icon: 'shop_two', route: 'confirmations', auth: true },
       ]
     }),
     computed: {

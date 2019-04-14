@@ -32,7 +32,7 @@
             avatar
           >
             <v-list-tile-avatar>
-              <img :src="getImage('/books/'+item.cover)">
+              <img :src="getImage(item.cover)">
             </v-list-tile-avatar>
 
             <v-list-tile-content>

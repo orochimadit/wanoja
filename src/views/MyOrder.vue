@@ -45,7 +45,7 @@
             'Authorization': 'Bearer ' + this.user.api_token,
         },
       }
-      let url = `${process.env.VUE_APP_BACKEND_URL}my-order`
+      let url = `${process.env.VUE_APP_API_URL}my-order`
       axios.get(url,config)
         .then((response) => {
           let orders = response.data.data

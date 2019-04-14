@@ -17,7 +17,7 @@
           <v-card :to="'/category/'+ category.slug">
             <v-img
               v-if="category.image"
-              :src="getImage('/categories/'+category.image)"
+              :src="getImage(category.image)"
               height="150px"
             >
               <v-container
@@ -100,7 +100,7 @@ import { constants } from 'fs';
     methods: {
       go(){
         // let url = '/categories'
-        let url = `${process.env.VUE_APP_BACKEND_URL}categories/`
+        let url = `${process.env.VUE_APP_API_URL}categories/`
         if(this.page>0) url = '/categories?page='+this.page
         axios.get(url)
           .then((response) => {
